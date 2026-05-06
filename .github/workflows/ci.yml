@@ -1,0 +1,22 @@
+name: healthcare-pipeline-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Syntax checks
+        run: python -m compileall src
+      - name: Unit tests
+        run: pytest -q
+      - name: Pipeline scorecard artifact
+        run: python scripts/pipeline_scorecard.py

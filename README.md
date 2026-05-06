@@ -19,4 +19,40 @@ This project implements an end-to-end data engineering pipeline using Python, Mo
 - **Database**: MongoDB
 - **Cloud Storage**: AWS S3
 
+## **Portfolio Upgrade (Compliance-First v2)**
+- **Orchestration**: Prefect flow in `src/pipeline.py`
+- **PHI protection**: Masking + encryption in `src/privacy.py`
+- **FHIR mapping**: Basic Patient resource mapping in `src/fhir_mapping.py`
+- **Data contracts**: Pandera schema checks in `src/data_contracts.py`
+- **Data quality**: Soda checks in `soda/checks.yml`
+- **Table storage target**: Parquet outputs including an Iceberg-style table artifact
+- **Pipeline scorecard**: `scripts/pipeline_scorecard.py` generates `artifacts/pipeline_scorecard.json`
+
+## **How It Works (Short)**
+1. Extract patient records from `data/raw/patients.csv`
+2. Clean and normalize columns
+3. Mask and encrypt PHI columns (`patient_name`, `email`, `phone`, `address`, `ssn`)
+4. Run quality checks (row count, null ratio, patient id)
+5. Save curated parquet + FHIR JSON artifacts
+
+See `RUNBOOK.md` for exact setup and commands.
+
+## **CI/CD**
+
+- GitHub Actions workflow: `.github/workflows/ci.yml`
+- Runs:
+  - dependency install
+  - compile checks
+  - unit tests
+  - scorecard generation
+
+## **Pre-Push Verification**
+
+```bash
+python -m compileall src scripts tests
+pytest -q
+python -m src.pipeline
+python scripts/pipeline_scorecard.py
+```
+
 

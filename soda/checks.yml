@@ -1,0 +1,5 @@
+checks for patients_curated:
+  - row_count > 0
+  - missing_count(patient_id) = 0
+  - invalid_percent(gender) = 0:
+      valid values: [male, female, other, unknown]
