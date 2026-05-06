@@ -45,6 +45,7 @@ See `RUNBOOK.md` for exact setup and commands.
   - compile checks
   - unit tests
   - scorecard generation
+- CI dependency set: `requirements-ci.txt` (stable runner subset)
 
 ## **Pre-Push Verification**
 
